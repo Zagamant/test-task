@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Threading.Tasks;
 using DAL.Entities;
 using DAL.Entities.Enums;
 using DAL.Helpers;
@@ -46,6 +47,30 @@ namespace DAL.Repositories.CompanyRepo
 
             return companies;
         }
+        
+        /// <summary>
+        /// Send request to get all Companies from database
+        /// </summary>
+        /// <returns>Enumerable of Company entities</returns>
+        public async Task<IEnumerable<Company>> GetAllAsync()
+        {
+            var companies = new List<Company>();
+            var request = "SELECT * FROM Company";
+            await using var connection = new SqlConnection(ConnectionString);
+            var dataReader = await connection.ExecuteReaderAsync(request);
+            while (await dataReader.ReadAsync())
+            {
+                companies.Add(new Company()
+                {
+                    Id = (int) dataReader["Id"],
+                    Title = (string) dataReader["Name"],
+                    TypeOfBusiness =
+                        (TypeOfBusiness) Enum.Parse(typeof(TypeOfBusiness), (string) dataReader["TypeOfBusiness"])
+                });
+            }
+
+            return companies;
+        }
 
         /// <summary>
         /// Get single record of <see cref="Company"/>
@@ -58,6 +83,26 @@ namespace DAL.Repositories.CompanyRepo
             using var connection = new SqlConnection(ConnectionString);
             var dataReader = connection.ExecuteReader(expression);
             dataReader.Read();
+            return new Company
+            {
+                Id = (int) dataReader["Id"],
+                Title = (string) dataReader["Name"],
+                TypeOfBusiness =
+                    (TypeOfBusiness) Enum.Parse(typeof(TypeOfBusiness), (string) dataReader["TypeOfBusiness"])
+            };
+        }
+        
+        /// <summary>
+        /// Get single record of <see cref="Company"/>
+        /// </summary>
+        /// <param name="id"><see cref="Company"/>'s identity number</param>
+        /// <returns>Record of <see cref="Company"/></returns>
+        public async Task<Company> GetByIdAsync(int id)
+        {
+            var expression = $"SELECT * FROM Company WHERE Id = {id}";
+            await using var connection = new SqlConnection(ConnectionString);
+            var dataReader = await connection.ExecuteReaderAsync(expression);
+            await dataReader.ReadAsync();
             return new Company
             {
                 Id = (int) dataReader["Id"],
@@ -83,7 +128,24 @@ namespace DAL.Repositories.CompanyRepo
 
             return entity;
         }
+        
+        /// <summary>
+        /// Create new record of <see cref="Company"/>
+        /// </summary>
+        /// <param name="entity"><see cref="Company"/></param>
+        /// <returns>Entity of <see cref="Company"/></returns>
+        public async Task<Company> InsertAsync(Company entity)
+        {
+            var expression = "INSERT INTO Company (Name, TypeOfBusiness) VALUES" +
+                             $"('{entity.Title}'," +
+                             $"{entity.TypeOfBusiness.ToString()}";
 
+            await using var connection = new SqlConnection(ConnectionString);
+            await connection.ExecuteAsync(expression);
+
+            return entity;
+        }
+        
         /// <summary>
         /// Update fields of record by id
         /// </summary>
@@ -106,6 +168,27 @@ namespace DAL.Repositories.CompanyRepo
         }
 
         /// <summary>
+        /// Update fields of record by id
+        /// </summary>
+        /// <param name="id"><see cref="Company"/>'s identity number</param>
+        /// <param name="entity"><see cref="Company"/></param>
+        /// <returns>Entity of <see cref="Company"/></returns>
+        public async Task<Company> UpdateAsync(int id, Company entity)
+        {
+            var expression = "UPDATE Company SET " +
+                             $"Name = '{entity.Title}', " +
+                             $"TypeOfBusiness = '{entity.TypeOfBusiness}'" +
+                             $"WHERE Id = {id}";
+
+            await using var connection = new SqlConnection(ConnectionString);
+            await connection.ExecuteAsync(expression);
+
+            entity.Id = id;
+
+            return entity;
+        }
+        
+        /// <summary>
         /// Remove record from table by id
         /// </summary>
         /// <param name="id"><see cref="Company"/>'s identity number</param>
@@ -115,6 +198,18 @@ namespace DAL.Repositories.CompanyRepo
 
             using var connection = new SqlConnection(ConnectionString);
             connection.Execute(expression);
+        }
+        
+        /// <summary>
+        /// Remove record from table by id
+        /// </summary>
+        /// <param name="id"><see cref="Company"/>'s identity number</param>
+        public async Task DeleteAsync(int id)
+        {
+            var expression = $"DELETE FROM Company WHERE Id = {id}";
+
+            await using var connection = new SqlConnection(ConnectionString);
+            await connection.ExecuteAsync(expression);
         }
     }
 }

@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using Microsoft.Data.SqlClient;
 
 namespace DAL.Helpers
@@ -11,6 +12,13 @@ namespace DAL.Helpers
             command.ExecuteNonQuery();
         } 
         
+        public static async Task ExecuteAsync(this SqlConnection connection, string expression)
+        {
+            await connection.OpenAsync();
+            var command = new SqlCommand(expression, connection);
+            await command.ExecuteNonQueryAsync();
+        } 
+        
         public static SqlDataReader ExecuteReader(this SqlConnection connection, string expression)
         {
             connection.Open();
@@ -18,5 +26,11 @@ namespace DAL.Helpers
             return command.ExecuteReader();
         }
 
+        public static async Task<SqlDataReader> ExecuteReaderAsync(this SqlConnection connection, string expression)
+        {
+            await connection.OpenAsync();
+            var command = new SqlCommand(expression, connection);
+            return await command.ExecuteReaderAsync();
+        }
     }
 }
