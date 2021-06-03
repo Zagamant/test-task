@@ -8,7 +8,7 @@ namespace DAL.Entities
     {
         public string Title { get; set; }
 
-        [JsonConverter(typeof(JsonStringEnumConverter))]
+        public int Size { get; set; }
         public TypeOfBusiness TypeOfBusiness { get; set; }
     }
 }

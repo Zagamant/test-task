@@ -84,7 +84,7 @@ namespace DAL.Repositories.WorkerRepo
         /// <returns>Entity of <see cref="Worker"/></returns>
         public Worker GetById(int id)
         {
-            var expression = $"SELECT * FROM Worker WHERE WorkerId = {id}";
+            var expression = $"SELECT * FROM Worker WHERE Id = {id}";
             using var connection = new SqlConnection(ConnectionString);
             var dataReader = connection.ExecuteReader(expression);
             dataReader.Read();
@@ -107,7 +107,7 @@ namespace DAL.Repositories.WorkerRepo
         /// <returns>Entity of <see cref="Worker"/></returns>
         public async Task<Worker> GetByIdAsync(int id)
         {
-            var expression = $"SELECT * FROM Worker WHERE WorkerId = {id}";
+            var expression = $"SELECT * FROM Worker WHERE Id = {id}";
             await using var connection = new SqlConnection(ConnectionString);
             var dataReader = await connection.ExecuteReaderAsync(expression);
             await dataReader.ReadAsync();
@@ -157,7 +157,7 @@ namespace DAL.Repositories.WorkerRepo
                 $"('{entity.LastName}'," +
                 $"'{entity.FirstName}'," +
                 $"'{entity.Patronymic}'," +
-                $"convert(date,'{entity.EmploymentDate}',104)," +
+                $"convert(date,'{entity.EmploymentDate}')," +
                 $"'{entity.Position.ToString()}'," +
                 $"{entity.CompanyId})";
 
@@ -206,7 +206,7 @@ namespace DAL.Repositories.WorkerRepo
                              $"Patronymic = '{entity.Patronymic}', " +
                              $"EmploymentDate = '{entity.EmploymentDate}', " +
                              $"Position =  '{entity.Position.ToString()}', " +
-                             $"CompanyId = '{entity.CompanyId}', " +
+                             $"CompanyId = '{entity.CompanyId}'" +
                              $"WHERE Id = {id}";
 
             await using var connection = new SqlConnection(ConnectionString);

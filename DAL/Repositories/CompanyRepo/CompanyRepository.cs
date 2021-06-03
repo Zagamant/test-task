@@ -39,7 +39,7 @@ namespace DAL.Repositories.CompanyRepo
                 companies.Add(new Company()
                 {
                     Id = (int) dataReader["Id"],
-                    Title = (string) dataReader["Name"],
+                    Title = (string) dataReader["Title"],
                     TypeOfBusiness =
                         (TypeOfBusiness) Enum.Parse(typeof(TypeOfBusiness), (string) dataReader["TypeOfBusiness"])
                 });
@@ -60,10 +60,10 @@ namespace DAL.Repositories.CompanyRepo
             var dataReader = await connection.ExecuteReaderAsync(request);
             while (await dataReader.ReadAsync())
             {
-                companies.Add(new Company()
+                companies.Add(new Company
                 {
                     Id = (int) dataReader["Id"],
-                    Title = (string) dataReader["Name"],
+                    Title = (string) dataReader["Title"],
                     TypeOfBusiness =
                         (TypeOfBusiness) Enum.Parse(typeof(TypeOfBusiness), (string) dataReader["TypeOfBusiness"])
                 });
@@ -86,7 +86,7 @@ namespace DAL.Repositories.CompanyRepo
             return new Company
             {
                 Id = (int) dataReader["Id"],
-                Title = (string) dataReader["Name"],
+                Title = (string) dataReader["Title"],
                 TypeOfBusiness =
                     (TypeOfBusiness) Enum.Parse(typeof(TypeOfBusiness), (string) dataReader["TypeOfBusiness"])
             };
@@ -106,7 +106,7 @@ namespace DAL.Repositories.CompanyRepo
             return new Company
             {
                 Id = (int) dataReader["Id"],
-                Title = (string) dataReader["Name"],
+                Title = (string) dataReader["Title"],
                 TypeOfBusiness =
                     (TypeOfBusiness) Enum.Parse(typeof(TypeOfBusiness), (string) dataReader["TypeOfBusiness"])
             };
@@ -119,7 +119,7 @@ namespace DAL.Repositories.CompanyRepo
         /// <returns>Entity of <see cref="Company"/></returns>
         public Company Insert(Company entity)
         {
-            var expression = "INSERT INTO Company (Name, TypeOfBusiness) VALUES" +
+            var expression = "INSERT INTO Company (Title, TypeOfBusiness) VALUES" +
                              $"('{entity.Title}'," +
                              $"{entity.TypeOfBusiness.ToString()}";
 
@@ -136,9 +136,9 @@ namespace DAL.Repositories.CompanyRepo
         /// <returns>Entity of <see cref="Company"/></returns>
         public async Task<Company> InsertAsync(Company entity)
         {
-            var expression = "INSERT INTO Company (Name, TypeOfBusiness) VALUES" +
-                             $"('{entity.Title}'," +
-                             $"{entity.TypeOfBusiness.ToString()}";
+            var expression = "INSERT INTO Company (Title, TypeOfBusiness) VALUES(" +
+                             $"'{entity.Title}'," +
+                             $"'{entity.TypeOfBusiness.ToString()}')";
 
             await using var connection = new SqlConnection(ConnectionString);
             await connection.ExecuteAsync(expression);
@@ -155,7 +155,7 @@ namespace DAL.Repositories.CompanyRepo
         public Company Update(int id, Company entity)
         {
             var expression = "UPDATE Company SET " +
-                             $"Name = '{entity.Title}', " +
+                             $"Title = '{entity.Title}', " +
                              $"TypeOfBusiness = '{entity.TypeOfBusiness}'" +
                              $"WHERE Id = {id}";
 
@@ -175,8 +175,12 @@ namespace DAL.Repositories.CompanyRepo
         /// <returns>Entity of <see cref="Company"/></returns>
         public async Task<Company> UpdateAsync(int id, Company entity)
         {
+            if (id == 0)
+            {
+                throw new ArgumentException("Id not valid");
+            }
             var expression = "UPDATE Company SET " +
-                             $"Name = '{entity.Title}', " +
+                             $"Title = '{entity.Title}', " +
                              $"TypeOfBusiness = '{entity.TypeOfBusiness}'" +
                              $"WHERE Id = {id}";
 

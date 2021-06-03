@@ -1,0 +1,51 @@
+@model IEnumerable<BLL.Models.WorkerManagement.WorkerModel>
+@{
+    ViewBag.Title = "Список работников";
+}
+
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="d-flex mb-3 justify-content-between">
+            <h2>@ViewBag.Title</h2>
+            <form method="get" asp-action="Add">
+                <button class="btn btn-success">Добавить</button>
+            </form>
+        </div>
+        <table class="table">
+            <tr>
+                <th>Id</th>
+                <th>Имя</th>
+                <th>Фамилия</th>
+                <th>Отчество</th>
+                <th>Дата приема на работу</th>
+                <th>Должность</th>
+                <th>Компания</th>
+                <th></th>
+                <th></th>
+            </tr>
+            @foreach (var e in Model)
+            {
+                <tr>
+                    <td>@e.Id</td>
+                    <td>@e.FirstName</td>
+                    <td>@e.LastName</td>
+                    <td>@e.Patronymic</td>
+                    <td>@e.EmploymentDate.ToShortDateString()</td>
+                    <td>@(e.Position)</td>
+                    <td>@(e.Company?.Title ?? "Без компании")</td>
+                    <td>
+                        <form method="get" asp-action="Edit" asp-route-id="@e.Id">
+                            <button class="btn btn-info">Изменить</button>
+                        </form>
+                    </td>
+                    <td>
+                        <form method="post" asp-route-id="@e.Id" asp-action="Delete">
+                            <button class="btn btn-danger">Удалить</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+</div>

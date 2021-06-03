@@ -1,0 +1,45 @@
+@using DAL.Entities.Enums
+@model WebApplication.ViewModels.CompanyViewModel
+
+@{
+    ViewBag.Title = ViewData["title"];
+}
+
+<h2>@ViewBag.Title</h2>
+<div class="row">
+    <div class="col-md-12">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id"/>
+            <div>
+                <label asp-for="Title"></label><br/>
+                <input asp-for="Title" class="form-control" autocomplete="off"/>
+                <span asp-validation-for="Title"></span><br/>
+            </div>
+
+            <div>
+                <label asp-for="Size"></label><br/>
+                <input disabled asp-for="Size" class="form-control" autocomplete="off"/>
+                <span asp-validation-for="Size"></span><br/>
+            </div>
+
+            <div>
+                <label asp-for="TypeOfBusiness"></label><br/>
+                <select class="custom-select" name="TypeOfBusiness" id="TypeOfBusiness">
+                    @foreach (var item  in Enum.GetValues(typeof(TypeOfBusiness)).Cast<TypeOfBusiness>().ToList())
+                    {
+                        // fix kostil' (Dictionary)
+                        <option value="@item"> @item.ToString().Split('_')[0]</option>
+                    }
+                </select>
+                <span asp-validation-for="TypeOfBusiness"></span><br/>
+            </div>
+
+
+            <div>
+                <button class="btn btn-primary mt-4" type="submit">Применить</button>
+                <button class="btn btn-danger mt-4" asp-controller="Company" asp-action="">Отменить</button>
+            </div>
+        </form>
+    </div>
+</div>

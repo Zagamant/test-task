@@ -11,10 +11,11 @@ namespace BLL.CompanyManagement
             {
                 Id = element.Id,
                 Title = element.Title,
-                TypeOfBusiness = element.TypeOfBusiness
+                TypeOfBusiness = element.TypeOfBusiness,
+                Size = element.Size
             };
 
         public static CompanyModel Map(Company element) => 
-            new(element.Id, element.Title, element.TypeOfBusiness);
+            new(element.Id, element.Title, element.TypeOfBusiness, element.Size);
     }
 }

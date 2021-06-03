@@ -1,4 +1,5 @@
 using System;
+using BLL.Models.CompanyManagement;
 using DAL.Entities;
 using DAL.Entities.Enums;
 
@@ -12,7 +13,7 @@ namespace BLL.Models.WorkerManagement
         public string Patronymic { get; init; }
         public DateTime EmploymentDate { get; init; }
         public Position Position { get; init; }
-        public Company Company { get; init; }
+        public CompanyModel Company { get; set; }
         public int CompanyId { get; init; }
 
         public WorkerModel()

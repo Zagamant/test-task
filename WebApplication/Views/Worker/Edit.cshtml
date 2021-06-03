@@ -1,0 +1,64 @@
+@using DAL.Entities.Enums
+@model WebApplication.ViewModels.WorkerViewModel
+@{
+    ViewBag.Title = ViewData["title"];
+}
+
+<h2>@ViewBag.Title</h2>
+<div class="row">
+    <div class="col-md-12">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id"/>
+            <div>
+                <label asp-for="FirstName"></label><br/>
+                <input asp-for="FirstName" class="form-control" autocomplete="off"/>
+                <span asp-validation-for="FirstName"></span><br/>
+            </div>
+
+            <div>
+                <label asp-for="LastName"></label><br/>
+                <input asp-for="LastName" class="form-control" autocomplete="off"/>
+                <span asp-validation-for="LastName"></span><br/>
+            </div>
+
+            <div>
+                <label asp-for="Patronymic"></label><br/>
+                <input asp-for="Patronymic" class="form-control" autocomplete="off"/>
+                <span asp-validation-for="Patronymic"></span><br/>
+            </div>
+
+            <div>
+                <label asp-for="EmploymentDate">Дата принятия на работу</label><br/>
+                <input type="date" asp-for="EmploymentDate" class="form-control"/>
+                <span asp-validation-for="EmploymentDate"></span><br/>
+            </div>
+
+            <div>
+                <label asp-for="CompanyId">Компания</label><br/>
+                <select asp-for="CompanyId" class="form-control">
+                    @foreach (var item in Model.CompaniesList)
+                    {
+                        <option value="@item.Id">@item.Title</option>
+                    }
+                </select>
+                <span asp-validation-for="CompanyId"></span><br/>
+            </div>
+
+            <div>
+                <label asp-for="Position">Позиция</label><br/>
+                <select class="custom-select" asp-for="Position" name="Position" id="Position">
+                    @foreach (var item in Enum.GetNames(typeof(Position)))
+                    {
+                        <option value="@item">@item</option>
+                    }
+                </select>
+                <span asp-validation-for="Position"></span><br/>
+            </div>
+            <div>
+                <button class="btn btn-primary mt-4" type="submit">Применить</button>
+                <button class="btn btn-danger mt-4" asp-controller="Worker" asp-action="">Отменить</button>
+            </div>
+        </form>
+    </div>
+</div>

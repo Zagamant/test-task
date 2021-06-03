@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApplication", "WebApplication\WebApplication.csproj", "{BB66D17E-93EC-4200-BEA1-1273065200B9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DAL", "DAL\DAL.csproj", "{7C2E798F-6552-42E8-A96C-754D0093586A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BLL", "BLL\BLL.csproj", "{59709411-6408-4A3E-BE40-89FC99958F1E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BLL.Models", "BLL.Models\BLL.Models.csproj", "{501A530F-5810-41D8-B333-2D015B103170}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BB66D17E-93EC-4200-BEA1-1273065200B9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BB66D17E-93EC-4200-BEA1-1273065200B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BB66D17E-93EC-4200-BEA1-1273065200B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BB66D17E-93EC-4200-BEA1-1273065200B9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7C2E798F-6552-42E8-A96C-754D0093586A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7C2E798F-6552-42E8-A96C-754D0093586A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7C2E798F-6552-42E8-A96C-754D0093586A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7C2E798F-6552-42E8-A96C-754D0093586A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{59709411-6408-4A3E-BE40-89FC99958F1E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{59709411-6408-4A3E-BE40-89FC99958F1E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{59709411-6408-4A3E-BE40-89FC99958F1E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{59709411-6408-4A3E-BE40-89FC99958F1E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{501A530F-5810-41D8-B333-2D015B103170}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{501A530F-5810-41D8-B333-2D015B103170}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{501A530F-5810-41D8-B333-2D015B103170}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{501A530F-5810-41D8-B333-2D015B103170}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
