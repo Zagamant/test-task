@@ -3,6 +3,9 @@ using Microsoft.Data.SqlClient;
 
 namespace DAL.Helpers
 {
+    /// <summary>
+    /// Improve readability of code
+    /// </summary>
     public static class SqlConnectionExtension
     {
         public static void Execute(this SqlConnection connection, string expression)

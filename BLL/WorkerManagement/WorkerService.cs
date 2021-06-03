@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BLL.CompanyManagement;
-using BLL.Models.CompanyManagement;
 using BLL.Models.WorkerManagement;
 using DAL.Entities;
 using DAL.Repositories.CompanyRepo;
@@ -10,6 +9,9 @@ using DAL.Repositories.WorkerRepo;
 
 namespace BLL.WorkerManagement
 {
+    /// <summary>
+    /// Provide service to work with workers models and entities
+    /// </summary>
     public class WorkerService : IWorkerService
     {
         private readonly IWorkerRepository _workerRepository;
@@ -21,6 +23,10 @@ namespace BLL.WorkerManagement
             _companyRepository = companyRepository;
         }
 
+        /// <summary>
+        /// Get all workers with companies objects
+        /// </summary>
+        /// <returns></returns>
         public async Task<IEnumerable<WorkerModel>> GetAllAsync()
         {
             var entities = await _workerRepository
@@ -39,11 +45,16 @@ namespace BLL.WorkerManagement
             });
         }
 
+        /// <summary>
+        /// Get worker by id
+        /// </summary>
+        /// <param name="id">Id of <see cref="Worler"/></param>
+        /// <returns></returns>
         public async Task<WorkerModel> GetAsync(int id)
         {
             var entity = await _workerRepository.GetByIdAsync(id);
             var result = WorkerMapper.Map(entity);
-            
+
             if (entity.CompanyId != 0)
             {
                 var company = await _companyRepository.GetByIdAsync(result.CompanyId);
@@ -53,6 +64,11 @@ namespace BLL.WorkerManagement
             return result;
         }
 
+        /// <summary>
+        /// Add new worker and return <see cref="WorkerModel"/> include companies
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         public async Task<WorkerModel> AddAsync(WorkerModel model)
         {
             var entity = WorkerMapper.Map(model);
@@ -74,6 +90,12 @@ namespace BLL.WorkerManagement
             return returnValue;
         }
 
+        /// <summary>
+        /// Update all fields with <see cref="WorkerModel"/>
+        /// </summary>
+        /// <param name="id">Id of old <see cref="Worker"/></param>
+        /// <param name="model">Updated fields</param>
+        /// <returns>New <see cref="WorkerModel"/></returns>
         public async Task<WorkerModel> EditAsync(int id, WorkerModel model)
         {
             var worker = await _workerRepository.GetByIdAsync(id);
@@ -97,7 +119,10 @@ namespace BLL.WorkerManagement
             return WorkerMapper.Map(result);
         }
 
+        /// <summary>
+        /// Remove <see cref="Worker"/> by id
+        /// </summary>
+        /// <param name="id">Id of <see cref="Worker"/></param>
         public async Task DeleteAsync(int id) => await _workerRepository.DeleteAsync(id);
-
     }
 }

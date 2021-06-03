@@ -6,6 +6,11 @@ using DAL.Entities;
 
 namespace DAL.Helpers
 {
+    /// <summary>
+    /// Provide base interface to create Repositories
+    /// </summary>
+    /// <typeparam name="TId"></typeparam>
+    /// <typeparam name="TEntity"></typeparam>
     public interface IRepository<TId, TEntity> where TEntity : BaseEntity<TId>
     {
         IDbConnection Connection { get; set; }

@@ -1,8 +1,7 @@
-using System.Linq;
+using System;
 using System.Threading.Tasks;
 using BLL.CompanyManagement;
 using BLL.Models.CompanyManagement;
-using BLL.WorkerManagement;
 using Microsoft.AspNetCore.Mvc;
 using WebApplication.ViewModels;
 
@@ -11,17 +10,23 @@ namespace WebApplication.Controllers
     public class CompanyController : Controller
     {
         private readonly ICompanyService _companyService;
-        private readonly IWorkerService _workerService;
 
-        public CompanyController(ICompanyService companyService, IWorkerService workerService)
+        public CompanyController(ICompanyService companyService)
         {
-            _companyService = companyService;
-            _workerService = workerService;
+            _companyService = companyService ?? throw new ArgumentNullException(nameof(companyService));
         }
 
+        /// <summary>
+        /// Get page of all Companies
+        /// </summary>
+        /// <returns></returns>
         public async Task<IActionResult> Index() =>
             View(await _companyService.GetAllAsync());
 
+
+        /// <summary>
+        /// Return page with form to add new <see cref="CompanyModel"/>
+        /// </summary>
         [HttpGet]
         public IActionResult Add()
         {
@@ -30,18 +35,26 @@ namespace WebApplication.Controllers
             return View("Edit", CompanyViewModel.Empty);
         }
 
+        /// <summary>
+        /// Provide action to add new Company
+        /// </summary>
+        /// <param name="vm"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> Add(CompanyViewModel vm)
         {
             if (!ModelState.IsValid)
                 return View("Edit", vm);
-            
+
             var dto = CompanyViewModel.ToModel(vm);
             var result = await _companyService.AddAsync(dto);
 
             return RedirectToAction("Index");
         }
-        
+
+        /// <summary>
+        /// Return page with form to edit existed <see cref="CompanyModel"/>
+        /// </summary>
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
@@ -52,18 +65,24 @@ namespace WebApplication.Controllers
             return View("Edit", vm);
         }
 
+        /// <summary>
+        /// Provide action to update existed Company with <see cref="CompanyViewModel"/>
+        /// </summary>
+        /// <param name="vm"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> Edit(CompanyViewModel vm)
         {
-            if (!ModelState.IsValid) 
+            if (!ModelState.IsValid)
                 return View("Edit", vm);
             var model = CompanyViewModel.ToModel(vm);
             var result = await _companyService.EditAsync(model.Id, model);
             return RedirectToAction("Index");
-
         }
 
-
+        /// <summary>
+        /// Remove <see cref="CompanyModel"/>
+        /// </summary>
         [HttpPost]
         public async Task<IActionResult> Delete(int id)
         {
